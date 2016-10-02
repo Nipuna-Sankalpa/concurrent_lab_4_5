@@ -25,6 +25,10 @@ int main() {
 
 // matrix multiplication
 
+    /*
+     * Parallel Implementation
+     */
+
     clock_t begin = omp_get_wtime();
 
 #pragma omp parallel for reduction(+:temp) collapse(2)
@@ -48,6 +52,10 @@ int main() {
 //        }
 //        std::cout << std::endl;
 //    }
+
+    /**
+     * Sequaential Implementation
+     */
 
     clock_t begin_seq = omp_get_wtime();
 
