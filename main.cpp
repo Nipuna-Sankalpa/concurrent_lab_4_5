@@ -24,8 +24,8 @@ int main() {
 #pragma omp parallel for collapse(2)
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < n; ++j) {
-            b[i][j] = (double) rand() / rand();
-            a[i][j] = (double) rand() / rand();
+            b[i][j] = rand() / rand();
+            a[i][j] = rand() / rand();
         }
     }
 
@@ -138,15 +138,19 @@ int main() {
 
         int b_j = (n / 2) * temp_3;
         int b_i = (n / 2) * temp_1;
-        int a_j = (n / 2) * b_i;
+        int a_j = b_i;
         int a_i = (n / 2) * temp_2;
 
+//        printf("Thread:%d %d %d %d %d\n",thread_id, a_i, a_j, b_i, b_j);
 
         if (thread_id < 4) {
+
+#pragma omp parallel for collapse(2)
+            
             for (int i = a_i; i < a_i + n / 2; ++i) {
                 for (int j = b_j; j < b_j + n / 2; ++j) {
                     for (int k = 0; k < n / 2; ++k) {
-                        tmp = +a[i][a_j + k] * b[b_i + k][j];
+                        tmp += a[i][a_j + k] * b[b_i + k][j];
                     }
                     c_matrix[i][j] = tmp;
                     tmp = 0;
@@ -156,7 +160,7 @@ int main() {
             for (int i = a_i; i < a_i + n / 2; ++i) {
                 for (int j = b_j; j < b_j + n / 2; ++j) {
                     for (int k = 0; k < n / 2; ++k) {
-                        tmp = +a[i][a_j + k] * b[b_i + k][j];
+                        tmp += a[i][a_j + k] * b[b_i + k][j];
                     }
                     t_matrix[i][j] = tmp;
                     tmp = 0;
