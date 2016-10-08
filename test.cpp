@@ -5,8 +5,8 @@
 #include <immintrin.h>
 
 
-#define size 8
-#define block_size 4
+#define size 4
+#define block_size 16
 
 
 double a[size][size];
@@ -74,21 +74,23 @@ int main() {
         for (int _i = 0; _i < size; _i += block_size) {
             for (int _j = 0; _j < size; _j += block_size) {
 
-                for (int i = _k; i < ((_k + block_size > i) ? size : _k + block_size); i++) {
-                    for (int j = _i; j < ((_i + block_size > j) ? size : _i + block_size); j++) {
-                        __m256d c = _mm256_setzero_pd();
-                        for (int k = _j; k < ((_j + block_size > k) ? size : _j + block_size); k += 4) {
+                for (int i = _k; i < ((_k + block_size > size) ? size : _k + block_size); i++) {
+                    for (int j = _i; j < ((_i + block_size > size) ? size : _i + block_size); j++) {
+//                        __m256d c = _mm256_setzero_pd();
+                        output[i * size][j]=0;
+                        for (int k = _j; k < ((_j + block_size > size) ? size : _j + block_size); k += 4) {
 
-                            c = _mm256_add_pd(c, _mm256_mul_pd(_mm256_load_pd(&a[i * size][k]),
-                                                               _mm256_load_pd(&transpose[j * size][k])));
+//                            c = _mm256_add_pd(c, _mm256_mul_pd(_mm256_load_pd(&a[i * size][k]),
+//                                                               _mm256_load_pd(&transpose[j * size][k])));
+                            output[i * size][j]+=a[i * size][k]+transpose[j * size][k];
                         }
-                        c = _mm256_hadd_pd(c, c);
-
-                        __m128d acc1 = _mm256_extractf128_pd(c, 0);
-                        __m128d acc2 = _mm256_extractf128_pd(c, 1);
-
-                        acc1 = _mm_add_sd(acc1, acc2);
-                        _mm_store_sd(&output[i * size][j], acc1);
+//                        c = _mm256_hadd_pd(c, c);
+//
+//                        __m128d acc1 = _mm256_extractf128_pd(c, 0);
+//                        __m128d acc2 = _mm256_extractf128_pd(c, 1);
+//
+//                        acc1 = _mm_add_sd(acc1, acc2);
+//                        _mm_store_sd(&output[i * size][j], acc1);
 
                     }
                 }
