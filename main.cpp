@@ -1,95 +1,243 @@
-#include <iostream>
-#include <ctime>
-#include <omp.h>
-#include <cmath>
-
-
-#define n 1000
-double a[n][n];
-double b[n][n];
-double transpose[n][n];
-double output[n][n];
-double output_parallel[n][n];
-
-//parallel
-double c_matrix[n][n];
-double t_matrix[n][n];
-
-
-int main() {
-
-
+//#include <iostream>
+//#include <ctime>
+//#include <omp.h>
+//#include <cmath>
+//#include <zconf.h>
+//#include <emmintrin.h>
+//#include <xmmintrin.h>
+//
+//#define n 1000
+//
+//
+//double a[n][n];
+//double b[n][n];
+//double transpose[n][n];
+//double output[n][n];
+//double output_parallel[n][n];
+//
+//
+////parallel
+//double c_matrix[n][n];
+//double t_matrix[n][n];
+//
+//
+//int main() {
+//
+//
+////    std::cout << sysconf((_SC_LEVEL1_DCACHE_LINESIZE)) << std::endl;
+//
 //    double temp = 0;
-//
-#pragma omp parallel for collapse(2)
-    for (int i = 0; i < n; ++i) {
-        for (int j = 0; j < n; ++j) {
-            b[i][j] = rand() / rand();
-            a[i][j] = rand() / rand();
-        }
-    }
-
-//
-//
-//// matrix multiplication
-//
-//    /*
-//     * Parallel Implementation
-//     */
-//
-//    double begin = omp_get_wtime();
-//
-//#pragma omp parallel for reduction(+:temp) collapse(2)
-//    for (int k = 0; k < n; ++k) {
+////
+////    for (int l = 0; l < 10; ++l) {
+//#pragma omp parallel for collapse(2)
 //        for (int i = 0; i < n; ++i) {
 //            for (int j = 0; j < n; ++j) {
-//                temp += a[k][j] * b[j][i];
+//                a[i][j] = (double) rand() / rand();
+//                b[i][j] = (double) rand() / rand();
+//
 //            }
-//            output_parallel[k][i] = temp;
-//            temp = 0;
 //        }
-//    }
 //
-//    double end = omp_get_wtime();
+//        double begin = omp_get_wtime();
+////
+//#pragma omp parallel for
+//        for (int k = 0; k < n; ++k) {
+//            for (int i = 0; i < n; i++) {
+//                output_parallel[k][i] = 0;
+//                for (int j = n; j--;) {
+//                    output_parallel[k][i] += a[k][n - j] * b[n - j][i];
+//                }
 //
-//    std::cout << "A Output" << std::endl;
-//
-//    for (int l = 0; l < n; ++l) {
-//        for (int i = 0; i < n; ++i) {
-//            std::cout << a[l][i] << "\t";
+//            }
 //        }
-//        std::cout << std::endl;
-//    }
-//    std::cout << "B Output" << std::endl;
+////
+//        double end = omp_get_wtime();
+//        std::cout << "Parallel Elapsed Time : " << (end - begin) << " secs" << std::endl;
 //
-//    for (int l = 0; l < n; ++l) {
-//        for (int i = 0; i < n; ++i) {
-//            std::cout << b[l][i] << "\t";
-//        }
-//        std::cout << std::endl;
-//    }
-//    std::cout << omp_get_num_procs();
-//    /**
-//     * Sequaential Implementation
-//     */
 //
+////    }
+////    exit(0);
+////
+////
+////// matrix multiplication
+////
+////    /*
+////     * Parallel Implementation
+////     */
+////
+////    double begin = omp_get_wtime();
+//////
+////#pragma omp parallel for
+////    for (int k = 0; k < n; ++k) {
+////        for (int i = 0; i < n; i++) {
+////            output_parallel[k][i] = 0;
+////            for (int j = n; j--;) {
+////                output_parallel[k][i] += a[k][n - j] * b[n - j][i];
+////            }
+////
+////        }
+////    }
+//////
+////    double end = omp_get_wtime();
+////    std::cout << "Parallel Elapsed Time : " << (end - begin) << " secs" << std::endl;
+//
+//
+////    std::cout << "A Output" << std::endl;
+////
+////    for (int l = 0; l < n; ++l) {
+////        for (int i = 0; i < n; ++i) {
+////            std::cout << a[l][i] << "\t";
+////        }
+////        std::cout << std::endl;
+////    }
+////    std::cout << "B Output" << std::endl;
+//
+////    for (int l = 0; l < n; ++l) {
+////        for (int i = 0; i < n; ++i) {
+////            std::cout << b[l][i] << "\t";
+////        }
+////        std::cout << std::endl;
+////    }
+////    std::cout << sizeof(a)/(1024*1024)<<std::endl;
+////    /**
+////     * Sequaential Implementation
+////     */
+////
 //    double begin_seq = omp_get_wtime();
 //
 //    for (int k = 0; k < n; ++k) {
 //        for (int i = 0; i < n; ++i) {
+//            output[k][i] = 0;
 //            for (int j = 0; j < n; ++j) {
-//                temp += a[k][j] * b[j][i];
+//                output[k][i] += a[k][j] * b[j][i];
 //            }
-//            output[k][i] = temp;
-//            temp = 0;
 //        }
 //    }
-//
+////
 //    double end_seq = omp_get_wtime();
 //
 //    std::cout << "Sequential Elapsed Time : " << (end_seq - begin_seq) << " secs" << std::endl;
+////
+//////    std::cout << "Sequential Output" << std::endl;
+//////
+//////    for (int l = 0; l < n; ++l) {
+//////        for (int i = 0; i < n; ++i) {
+//////            std::cout << output[l][i] << "\t";
+//////        }
+//////        std::cout << std::endl;
+//////    }
+////
 //
-////    std::cout << "Sequential Output" << std::endl;
+////
+//////    transpose B matrix
+////    int _temp = 0, temp_1 = 0, _temp_1 = 0, temp_2 = 0, _temp_2 = 0, temp_3 = 0, _temp_3 = 0, temp_4 = 0, _temp_4 = 0;
+////    double begin_transpose = omp_get_wtime();
+////#pragma omp parallel for num_threads(8) collapse(2)
+////    for (int l = 0; l < n; ++l) {
+////        for (int i = 0; i < n; ++i) {
+////            transpose[l][i] = b[i][l];
+////        }
+////    }
+//////
+//////    __m128d *p1, *p2, v1, v2;
+//////    double prod[2];
+//////    double *p, *ptmp;
+//////    p = &output[0][0];
+////
+////#pragma omp parallel for reduction(+:temp) collapse(2)
+////    for (int k = 0; k < n; ++k) {
+//////        ptmp = p;
+////        for (int i = 0; i < n; i++) {
+//////            p1 = (__m128d *) &a[k][0];
+//////            p2 = (__m128d *) &transpose[i][0];
+//////            v1 = _mm_sub_pd(v1, v1);
+////            for (int j = 0; j < n; j ++) {
+////                temp += a[k][j] * transpose[i][j];
+//////                v2 = _mm_mul_pd(*p1, *p2);
+//////                v1 = _mm_add_pd(v1, v2);
+//////                p1++;
+//////                p2++;
+////            }
+////            output[k][i] = temp;
+////            temp = 0;
+//////            _mm_store_pd(prod, v1);
+//////            *ptmp += prod[0];
+//////            *ptmp += prod[1];
+//////            ptmp++;
+////        }
+//////        p += n;
+////    }
+////
+////    double end_transpose = omp_get_wtime();
+////
+////    std::cout << "Parallel(Transpose) Elapsed Time : " << (end_transpose - begin_transpose) << " secs" << std::endl;
+//
+//    //parallel opt
+//
+//
+////    double begin_opt = omp_get_wtime();
+////    double tmp_1 = 0;
+////#pragma omp parallel for num_threads(8) collapse(2)
+////    for (int i = 0; i < n; ++i) {
+////        for (int j = i + 1; j < n; ++j) {
+////            tmp_1 = b[i][j];
+////            b[i][j] = b[j][i];
+////            b[j][i] = tmp_1;
+////        }
+////    }
+////
+////#pragma omp parallel num_threads(8)
+////    {
+////        int thread_id = omp_get_thread_num();
+////
+////        int temp_1 = thread_id / 4;
+////        int temp_3 = thread_id % 2;
+////        int temp_2 = (thread_id % 4) / 2;
+////        double tmp = 0;
+////
+////        int a_i = (n / 2) * temp_1;
+////        int b_j = a_i;
+////        int b_i = (n / 2) * temp_2;
+////        int a_j = temp_3;
+////
+//////        printf("Thread:%d %d %d %d %d\n",thread_id, a_i, a_j, b_i, b_j);
+////
+////        if (thread_id < 4) {
+////
+////            for (int i = a_i; i < a_i + n / 2; ++i) {
+////                for (int j = b_i; j < b_i + n / 2; ++j) {
+////                    for (int k = 0; k < n / 2; ++k) {
+////                        tmp += a[i][a_j + k] * b[b_i][b_j + k];
+////                    }
+////                    c_matrix[i][j] = tmp;
+////                    tmp = 0;
+////                }
+////            }
+////        } else {
+////            for (int i = a_i; i < a_i + n / 2; ++i) {
+////                for (int j = b_i; j < b_i + n / 2; ++j) {
+////                    for (int k = 0; k < n / 2; ++k) {
+////                        tmp += a[i][a_j + k] * b[b_i][b_j + k];
+////                    }
+////                    t_matrix[i][j] = tmp;
+////                    tmp = 0;
+////                }
+////            }
+////        }
+////    }
+////
+////#pragma omp parallel for collapse(2)
+////    for (int i = 0; i < n; ++i) {
+////        for (int j = 0; j < n; ++j) {
+////            c_matrix[i][j] = c_matrix[i][j] + t_matrix[i][j];
+////        }
+////    }
+////
+////    double end_opt = omp_get_wtime();
+////
+////    std::cout << "Optimized Elapsed Time : " << (end_opt - begin_opt) << " secs" << std::endl;
+//
+////    std::cout << "Optimized Output" << std::endl;
 ////
 ////    for (int l = 0; l < n; ++l) {
 ////        for (int i = 0; i < n; ++i) {
@@ -98,96 +246,30 @@ int main() {
 ////        std::cout << std::endl;
 ////    }
 //
-//    std::cout << "Parallel Elapsed Time : " << (end - begin) << " secs" << std::endl;
+//    //cache optimization
 //
-////    transpose B matrix
-//#pragma omp parallel for collapse(2)
-//    for (int l = 0; l < n; ++l) {
-//        for (int i = 0; i < n; ++i) {
-//            transpose[l][i] = b[i][l];
-//        }
-//    }
+////    int Tile = 50;
+////
+////    double begin_cache = omp_get_wtime();
+////
+//////#pragma omp parallel for
+////    for (int i = 0; i < n; i += Tile) {
+////        for (int j = 0; j < n; j += Tile) {
+////            for (int k = 0; k < n; k += Tile) {
+////                for (int y = i; y < i + Tile; y++) {
+////                    for (int x = j; x < j + Tile; x++) {
+////                        for (int z = k; z < k + Tile; z++) {
+////                            temp += a[y][z] * b[z][x];
+////                        }
+////                        output_parallel[y][x] = temp;
+////                        temp = 0;
+////                    }
+////                }
+////            }
+////        }
+////    }
+////    double end_cache = omp_get_wtime();
+////    std::cout << "Optimized cache Elapsed Time : " << (end_cache - begin_cache) << " secs" << std::endl;
 //
-//    double begin_transpose = omp_get_wtime();
-//
-//#pragma omp parallel for reduction(+:temp) collapse(2)
-//    for (int k = 0; k < n; ++k) {
-//        for (int i = 0; i < n; ++i) {
-//            for (int j = 0; j < n; ++j) {
-//                temp += a[k][j] * transpose[i][j];
-//            }
-//            output_parallel[k][i] = temp;
-//            temp = 0;
-//        }
-//    }
-//
-//    double end_transpose = omp_get_wtime();
-//
-//    std::cout << "Parallel(Transpose) Elapsed Time : " << (end_transpose - begin_transpose) << " secs" << std::endl;
-
-    double begin_opt = omp_get_wtime();
-
-#pragma omp parallel num_threads(8)
-    {
-        int thread_id = omp_get_thread_num();
-
-        int temp_1 = thread_id / 4;
-        int temp_3 = thread_id % 2;
-        int temp_2 = (thread_id % 4) / 2;
-        double tmp = 0;
-
-        int b_j = (n / 2) * temp_3;
-        int b_i = (n / 2) * temp_1;
-        int a_j = b_i;
-        int a_i = (n / 2) * temp_2;
-
-//        printf("Thread:%d %d %d %d %d\n",thread_id, a_i, a_j, b_i, b_j);
-
-        if (thread_id < 4) {
-
-#pragma omp parallel for collapse(2)
-            
-            for (int i = a_i; i < a_i + n / 2; ++i) {
-                for (int j = b_j; j < b_j + n / 2; ++j) {
-                    for (int k = 0; k < n / 2; ++k) {
-                        tmp += a[i][a_j + k] * b[b_i + k][j];
-                    }
-                    c_matrix[i][j] = tmp;
-                    tmp = 0;
-                }
-            }
-        } else {
-            for (int i = a_i; i < a_i + n / 2; ++i) {
-                for (int j = b_j; j < b_j + n / 2; ++j) {
-                    for (int k = 0; k < n / 2; ++k) {
-                        tmp += a[i][a_j + k] * b[b_i + k][j];
-                    }
-                    t_matrix[i][j] = tmp;
-                    tmp = 0;
-                }
-            }
-        }
-    }
-
-#pragma omp parallel for collapse(2)
-    for (int i = 0; i < n; ++i) {
-        for (int j = 0; j < n; ++j) {
-            c_matrix[i][j] = c_matrix[i][j] + t_matrix[i][j];
-        }
-    }
-
-    double end_opt = omp_get_wtime();
-
-    std::cout << "Optimized (Transpose) Elapsed Time : " << (end_opt - begin_opt) << " secs" << std::endl;
-
-//    std::cout << "Optimized Output" << std::endl;
-//
-//    for (int l = 0; l < n; ++l) {
-//        for (int i = 0; i < n; ++i) {
-//            std::cout << c_matrix[l][i] << "\t";
-//        }
-//        std::cout << std::endl;
-//    }
-
-    return 0;
-}
+//    return 0;
+//}
