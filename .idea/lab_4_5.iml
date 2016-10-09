@@ -2,10 +2,13 @@
 <module type="CPP_MODULE" version="4">
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/main.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Sequential.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/test.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/OptimizedParallelMultiplication.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/main.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/test.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Sequential.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Assignment_120339P_120168N.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/DefaultParallel.cpp" isTestSource="false" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library">
