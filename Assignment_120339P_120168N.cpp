@@ -12,6 +12,12 @@ double b[size][size];
 double transpose[size][size];
 double output[size][size];
 
+void sequential();
+
+void default_parallel();
+
+void optimized_parallel();
+
 int main() {
 /**
  * initializing values for matrices
@@ -25,9 +31,18 @@ int main() {
         }
     }
 
-    /**
-     * Sequential Code
-     */
+    sequential();
+    default_parallel();
+    optimized_parallel();
+
+    return 0;
+}
+
+void sequential() {
+
+/**
+ * Sequential Code
+ */
     double begin_seq = omp_get_wtime(); //start time count for sequential calculation
 
     for (int k = 0; k < size; ++k) {
@@ -41,9 +56,9 @@ int main() {
 
     double end_seq = omp_get_wtime();   //get terminal time count for sequential calculation
     std::cout << "Sequential Elapsed Time : " << (end_seq - begin_seq) << " secs" << std::endl;
+}
 
-
-
+void default_parallel() {
     /**
      * Default Parallel Code
      */
@@ -54,15 +69,17 @@ int main() {
     for (int k = 0; k < size; ++k) {
         for (int i = 0; i < size; i++) {
             output[k][i] = 0;
-            for (int j = size; j < size; j++) {
-                output[k][i] += a[k][j] * b[j][i];      //calculate matrix multiplication
+            for (int j = 0; j < size; j++) {
+                output[k][i] += a[k][j] * b[j][i];     //calculate matrix multiplication
             }
         }
     }
 
     double end = omp_get_wtime();       //terminal time count for parallel calculation
-
     std::cout << "Default Parallel Elapsed Time : " << (end - begin) << " secs" << std::endl;
+}
+
+void optimized_parallel() {
 
     /**
      * Optimized Parallel Code
@@ -111,8 +128,5 @@ int main() {
         }
     }
     double end_transpose = omp_get_wtime();     //get terminal time.
-
     std::cout << "Optimized Parallel Elapsed Time : " << (end_transpose - begin_transpose) << " secs" << std::endl;
-
-    return 0;
 }
